@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurations>
+  <config version="1.0" previous="">
+    <platforms>
+      <platform name="ZPUino">
+      	<description>ZPUino is a SoC (System on a Chip) with a 32-bit ZPU processor.</description>
+        <boards>
+          <board name="Papilio One 250">
+            <description>Gadget Factory "Papilio One" board, fitted with a Xilinx Spartan 3E 250 FPGA</description>
+            <files>
+              <file type="FILE_VHDL">zpuinopkg.vhd</file>
+              <file type="FILE_VHDL">prescaler.vhd</file>
+              <file type="FILE_VHDL">uart_brgen.vhd</file>
+              <file type="FILE_VHDL">tx_unit.vhd</file>
+              <file type="FILE_VHDL">timer.vhd</file>
+              <file type="FILE_VHDL">spiclkgen.vhd</file>
+              <file type="FILE_VHDL">spi.vhd</file>
+              <file type="FILE_VHDL">zpuino_uart_rx.vhd</file>
+              <file type="FILE_VHDL">zpuino_uart_mv_filter.vhd</file>
+              <file type="FILE_VHDL">fifo.vhd</file>
+              <file type="FILE_VHDL">zpuino_uart.vhd</file>
+              <file type="FILE_VHDL">zpuino_timers.vhd</file>
+              <file type="FILE_VHDL">zpuino_spi.vhd</file>
+              <file type="FILE_VHDL">zpuino_sigmadelta.vhd</file>
+              <file type="FILE_VHDL">zpuino_intr.vhd</file>
+              <file type="FILE_VHDL">zpuino_gpio.vhd</file>
+              <file type="FILE_VHDL">zpuino_serialreset.vhd</file>
+              <file type="FILE_VHDL">zpuino_crc16.vhd</file>
+              <file type="FILE_VHDL">zpuino_adc.vhd</file>
+              <file type="FILE_VHDL">zpuino_empty_device.vhd</file>
+              <file type="FILE_VHDL">dualport_ram.vhd</file>
+              <file type="FILE_VHDL">wishbonepkg.vhd</file>
+              <file type="FILE_VHDL">pulse.vhd</file>
+              <file type="FILE_VHDL">shifter.vhd</file>
+              <file type="FILE_VHDL">mult.vhd</file>
+              <file type="FILE_VHDL">zpu_core_extreme.vhd</file>
+              <file type="FILE_VHDL">zpuino_io.vhd</file>
+              <file type="FILE_VHDL">wb_rom_ram.vhd</file>
+              <file type="FILE_VHDL">wbmux2.vhd</file>
+              <file type="FILE_VHDL">wbarb2_1.vhd</file>
+              <file type="FILE_VHDL">zpuino_debug_core.vhd</file>
+              <file type="FILE_VHDL">zpuino_debug_spartan3e.vhd</file>
+              <file type="FILE_VHDL">jtag_chain.vhd</file>
+              <file type="FILE_VHDL">zpuino_top.vhd</file>
+              <file type="FILE_VHDL">pad.vhd</file>
+            </files>
+            <variants>
+              <variant name="None">
+               	<description>Plain ZPUino implementation</description>
+                <files>
+                	<file type="FILE_VHDL">boards/papilio_one/s3e250/clkgen.vhd</file>
+              		<file type="FILE_VHDL">boards/papilio_one/s3e250/stack.vhd</file>
+              		<file type="FILE_VHDL">boards/papilio_one/s3e250/papilio_one_top.vhd</file>
+                  <file type="FILE_UCF">boards/papilio_one/s3e250/papilio_one.ucf</file>
+              		<file type="FILE_VHDL">boards/papilio_one/s3e250/zpu_config.vhd</file>
+              		<file type="FILE_VHDL">boards/papilio_one/s3e250/prom-generic-dp-32.vhd</file>
+                </files>
+              </variant>
+              <variant name="Hepahestus">
+                <description/>
+              </variant>
+            </variants>
+          </board>
+          <board name="Papilio One 500">
+            <description>Gadget Factory "Papilio One" board, fitted with a Xilinx Spartan 3E 500 FPGA</description>
+            <variants>
+              <variant name="Hyperion">
+                <description/>
+              </variant>
+              <variant name="Hepahestus">
+                <description/>
+              </variant>
+            </variants>
+          </board>
+          <board name="Papilio Pro S6LX4">
+            <description>Gadget Factory "Papilio Pro" board, fitted with a Xilinx Spartan 6 LX4 FPGA
+            
+The "Papilio Pro" board includes a 8MB SDRAM.</description>
+          </board>
+          <board name="Papilio Pro S6LX9">
+	        	<description>Gadget Factory "Papilio Pro" board, fitted with a Xilinx Spartan 6 LX9 FPGA</description>
+          </board>
+        </boards>
+      </platform>
+    </platforms>
+  </config>
+</configurations>
