@@ -7,6 +7,8 @@
 TARGET = serprodemologicstart
 TEMPLATE = app
 
+VERSION=1.0.1
+
 greaterThan(QT_MAJOR_VERSION, 4) {
     QT       += widgets serialport
 } else {
