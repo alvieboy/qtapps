@@ -9,6 +9,7 @@
             <description>Gadget Factory "Papilio One" board, fitted with a Xilinx Spartan 3E 250 FPGA</description>
             <files>
               <file type="FILE_VHDL">zpuinopkg.vhd</file>
+              <file type="FILE_VHDL">zpupkg.vhd</file>
               <file type="FILE_VHDL">prescaler.vhd</file>
               <file type="FILE_VHDL">uart_brgen.vhd</file>
               <file type="FILE_VHDL">tx_unit.vhd</file>
@@ -44,6 +45,23 @@
               <file type="FILE_VHDL">zpuino_top.vhd</file>
               <file type="FILE_VHDL">pad.vhd</file>
             </files>
+            <properties>
+    					<!-- <property name="Add I/O Buffers" value="false"/> -->
+            	<property name="Optimization Effort virtex6" value="High"/>
+              <property name="Optimization Effort" value="High"/>
+              <property name="Use Synthesis Constraints File" value="false"/>
+    					<property name="Implementation Top" value="Architecture|papilio_one_top|rtl"/>
+    					<property name="Implementation Top File" value="papilio_one_top.vhd"/>
+    					<property name="Implementation Top Instance Path" value="/papilio_one_top"/>
+    					<property name="Allow Logic Optimization Across Hierarchy" value="true"/>
+              <property name="Allow Unmatched LOC Constraints" value="true"/>
+              <property name="Device" value="xc3s250e"/>
+    					<property name="Device Family" value="Spartan3E"/>
+              <property name="Enable Internal Done Pipe" value="true"/>
+              <property name="Max Fanout" value="100000"/>
+              <property name="Preferred Language" value="VHDL"/>
+							<property name="Package" value="tq144"/>
+            </properties>
             <variants>
               <variant name="None">
                	<description>Plain ZPUino implementation</description>
@@ -53,6 +71,7 @@
               		<file type="FILE_VHDL">boards/papilio_one/s3e250/papilio_one_top.vhd</file>
                   <file type="FILE_UCF">boards/papilio_one/s3e250/papilio_one.ucf</file>
               		<file type="FILE_VHDL">boards/papilio_one/s3e250/zpu_config.vhd</file>
+                  <file type="FILE_VHDL">boards/papilio_one/s3e250/zpuino_config.vhd</file>
               		<file type="FILE_VHDL">boards/papilio_one/s3e250/prom-generic-dp-32.vhd</file>
                 </files>
               </variant>

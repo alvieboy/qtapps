@@ -3,10 +3,65 @@
 #include <QFile>
 #include <QObject>
 #include <QStringList>
+#include <QDebug>
 
 ISEXML::ISEXML(): doc(NULL)
 {
 }
+
+void ISEXML::createBare()
+{
+	if (doc)
+		delete doc;
+
+	doc = new QDomDocument();
+	QDomProcessingInstruction xmlDecl = doc->createProcessingInstruction("xml",
+																		 "version=\"1.0\" "
+																		 "encoding=\"UTF-8\" "
+																		 "standalone=\"no\"");
+	doc->appendChild(xmlDecl);
+
+	QDomElement project = doc->createElement("project");
+	project.setAttribute("xmlns", "http://www.xilinx.com/XMLSchema");
+	project.setAttribute("xmlns:xil_pn","http://www.xilinx.com/XMLSchema");
+
+	doc->appendChild(project);
+
+	QDomElement header = doc->createElement("header");
+	project.appendChild(header);
+
+	QDomElement version = doc->createElement("version");
+	version.setAttribute("xil_pn:ise_version","14.1");
+	version.setAttribute("xil_pn:schema_version","2");
+	project.appendChild(version);
+
+	project.appendChild(doc->createElement("files"));
+	project.appendChild(doc->createElement("properties"));
+	project.appendChild(doc->createElement("bindings"));
+	project.appendChild(doc->createElement("libraries"));
+}
+
+QDomElement ISEXML::getVersion()
+{
+	if (NULL==doc)
+        return QDomElement();
+	return getElement(doc->documentElement(),"version");
+}
+
+QDomElement ISEXML::getProperties()
+{
+	if (NULL==doc)
+        return QDomElement();
+	return getElement(doc->documentElement(),"properties");
+}
+
+QDomElement ISEXML::getFiles()
+{
+	if (NULL==doc)
+        return QDomElement();
+	return getElement(doc->documentElement(),"files");
+}
+
 
 int ISEXML::openProject(const QString &name, QString &error)
 {
@@ -25,36 +80,32 @@ int ISEXML::openProject(const QString &name, QString &error)
 		return -1;
 	}
 
-    version = getElement(doc->documentElement(),"version");
-
-	if (version.isNull()) {
+	if (getVersion().isNull()) {
 		qDebug("Invalid");
 		error = tr("Looks like an invalid ISE file");
 		return -1;
 	}
+
 	if (getSchemaVersion()!="2") {
 		error = tr("Schema version") + getSchemaVersion() + tr("not supported");
         return -1;
 	}
-	properties = getElement(doc->documentElement(), "properties");
-
-	files = getElement(doc->documentElement(), "files");
 
 	return 0;
 }
 
-QString ISEXML::getISEVersion() const
+QString ISEXML::getISEVersion() 
 {
 	if (!doc)
 		return NULL;
-	return version.attribute("xil_pn:ise_version");
+	return getVersion().attribute("xil_pn:ise_version");
 }
 
-QString ISEXML::getSchemaVersion() const
+QString ISEXML::getSchemaVersion()
 {
 	if (!doc)
 		return NULL;
-	return version.attribute("xil_pn:schema_version");
+	return getVersion().attribute("xil_pn:schema_version");
 }
 
 
@@ -94,15 +145,19 @@ QString ISEXML::fileTypeToString(enum ISEFileType type)
 	switch(type) {
 	case FILE_VHDL:
 		return "FILE_VHDL";
+	case FILE_UCF:
+		return "FILE_UCF";
+	case FILE_SCH:
+        return "FILE_SCHEMATIC";
 	default:
 		return "";
 	}
 }
 
-QString ISEXML::getProperty(const QString &name) const
+QString ISEXML::getProperty(const QString &name)
 {
 
-	for(QDomNode n = properties.firstChild(); !n.isNull(); n = n.nextSibling())
+	for(QDomNode n = getProperties().firstChild(); !n.isNull(); n = n.nextSibling())
 	{
 		if (n.isElement()) {
 			QDomElement el = n.toElement();
@@ -120,7 +175,7 @@ QDomElement ISEXML::addFile(const QString &filename, enum ISEFileType type)
 	QDomElement file = doc->createElement("file");
 	file.setAttribute("xil_pn:name",filename);
 	file.setAttribute("xil_pn:type",fileTypeToString(type));
-	if (type==FILE_VHDL) {
+	if (type==FILE_VHDL || type==FILE_SCHEMATIC) {
 		/* Add association */
 		QDomElement assoc = doc->createElement("association");
 		assoc.setAttribute("xil_pn:name","BehavioralSimulation");
@@ -133,6 +188,11 @@ QDomElement ISEXML::addFile(const QString &filename, enum ISEFileType type)
 		file.appendChild(assoc);
 
 		incrementSequenceID();
+	} else if (type==FILE_UCF) {
+		QDomElement assoc = doc->createElement("association");
+		assoc.setAttribute("xil_pn:name","Implementation");
+		assoc.setAttribute("xil_pn:seqID", "0");
+		file.appendChild(assoc);
 	}
 	return file;
 }
@@ -308,3 +368,98 @@ VariantInformation ISEXML::getVariantInformation(const QString &platform, const 
 
 	return i;
 }
+
+void ISEXML::addFilesFromElement(QDomElement files)
+{
+	unsigned int i;
+
+	if (!files.isNull()) {
+		QDomNodeList fileslist = files.elementsByTagName("file");
+		unsigned count = fileslist.count();
+
+		qDebug() << count << "files";
+
+		for (i=0; i < count; i++) {
+			QDomElement e = fileslist.at(i).toElement();
+			if (e.isNull())
+                continue;
+			QString type = e.attribute("type");
+			ISEFileType t;
+
+			if (type=="FILE_VHDL") {
+                t = FILE_VHDL;
+			} else if (type=="FILE_UCF") {
+                t = FILE_UCF;
+			} else {
+				// Error?
+                qDebug() << "Invalid file type "<<type;
+                return;
+			}
+			QDomElement fe = addFile(e.text(), t);
+
+			getFiles().appendChild(fe);
+		}
+	} else {
+        qDebug() << "No files to add ????????";
+	}
+}
+
+void ISEXML::addPropertiesFromElement(QDomElement props)
+{
+	unsigned int i;
+
+	if (!props.isNull()) {
+		QDomNodeList list = props.elementsByTagName("property");
+		unsigned count = list.count();
+
+		for (i=0; i < count; i++) {
+			QDomElement e = list.at(i).toElement();
+			if (e.isNull())
+                continue;
+			QString name = e.attribute("name");
+            QString value = e.attribute("value");
+			QDomElement fe = doc->createElement("property");
+			fe.setAttribute("xil_pn:name", name);
+			fe.setAttribute("xil_pn:value", value);
+			fe.setAttribute("xil_pn:valueState","non-default");
+
+			getProperties().appendChild(fe);
+		}
+	} else {
+        qDebug() << "No files to add ????????";
+	}
+}
+
+void ISEXML::updateProject(const QString &platform, const QString &board, const QString &variant)
+{
+	QDomElement p = locatePlatform(platform);
+	QDomElement b = locateBoard(platform,board);
+	QDomElement v = locateVariant(platform,board,variant);
+
+	if (p.isNull() || b.isNull() || v.isNull())
+		return;
+
+	/* Clear sequence */
+    sequence=0;
+	/* Ok, grab files */
+	QDomElement files = getElement(b,"files");
+	addFilesFromElement(files);
+    addPropertiesFromElement( getElement(b,"properties"));
+
+    files = getElement(v,"files");
+	addFilesFromElement(files);
+	addPropertiesFromElement( getElement(v,"properties"));
+
+    qDebug() << "Finished";
+
+//	qDebug() << "Document" <<doc->toString();
+
+	QFile file("test.xise");
+
+	if (!file.open(QIODevice::WriteOnly|QIODevice::Truncate))
+		return;
+
+	file.write(doc->toByteArray());
+    file.close();
+}
+

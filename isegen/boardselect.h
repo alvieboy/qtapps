@@ -16,6 +16,11 @@ public:
 	explicit BoardSelect(QWidget *parent = 0);
 	~BoardSelect();
 	void setXml(ISEXML *xmli);
+
+	QString getPlatform() const;
+	QString getBoard() const;
+	QString getVariant() const;
+
 public slots:
 	void onProjectChanged(QString);
 	void onVariantChanged(QString);

@@ -56,6 +56,8 @@ void MainWindow::onNew()
 	BoardSelect s;
 	s.setXml( &xml );
 	s.exec();
+	xml.createBare();
+	xml.updateProject( s.getPlatform(), s.getBoard(), s.getVariant() );
 }
 
 void MainWindow::onExit()

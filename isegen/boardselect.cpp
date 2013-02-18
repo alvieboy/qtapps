@@ -22,6 +22,21 @@ void BoardSelect::setXml(ISEXML *xmli)
 	ui->projectComboBox->addItems(projects);
 }
 
+QString BoardSelect::getPlatform() const
+{
+    return ui->projectComboBox->currentText();
+}
+QString BoardSelect::getBoard() const
+{
+	return ui->boardComboBox->currentText();
+}
+
+QString BoardSelect::getVariant() const
+{
+	return ui->variantComboBox->currentText();
+}
+
+
 void BoardSelect::onProjectChanged(QString project)
 {
 	PlatformInformation i;

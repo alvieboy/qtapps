@@ -21,7 +21,6 @@ struct VariantInformation
     QString description;
 };
 
-
 class ISEXML: public QObject {
     Q_OBJECT;
 public:
@@ -32,14 +31,15 @@ public:
 
 	int openProject(const QString &name, QString &error);
 	void closeProject();
+	void createBare();
 
-	enum ISEFileType { FILE_VHDL };
+	enum ISEFileType { FILE_VHDL, FILE_UCF, FILE_SCHEMATIC };
 
 
 	QString fileTypeToString(enum ISEFileType type);
-	QString getISEVersion() const;
-	QString getSchemaVersion() const;
-	QString getProperty(const QString &name) const;
+	QString getISEVersion();
+	QString getSchemaVersion();
+	QString getProperty(const QString &name);
 
 	QList<QString> getPlatforms() const;
 	QList<QString> getBoards(const QString &platform) const;
@@ -54,6 +54,10 @@ public:
 	QDomElement locatePlatform(const QString &name) const;
 	QDomElement locateBoard(const QString&platform, const QString &name) const;
 	QDomElement locateVariant(const QString&platform, const QString &board, const QString&name) const;
+	void updateProject(const QString &platform, const QString &board, const QString &variant);
+	void addFilesFromElement(QDomElement files);
+    void addPropertiesFromElement(QDomElement props);
+
 
 protected:
 	QDomElement addFile(const QString &filename, enum ISEFileType type=FILE_VHDL);
@@ -66,13 +70,13 @@ protected:
 	static QDomElement getElementWithAttribute(const QDomElement &root, const QString&name, const QString&attribute, const QString&value);
 	static QStringList attributesToList( QDomNodeList &e, const QString &attr);
 
+	QDomElement getVersion();
+	QDomElement getFiles();
+	QDomElement getProperties();
 
 
 private:
 	QDomDocument *doc;
-	QDomElement version;
-	QDomElement files;
-	QDomElement properties;
 	QDomDocument m_configDoc;
 	int sequence;
 };
