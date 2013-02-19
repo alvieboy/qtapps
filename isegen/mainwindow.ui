@@ -125,7 +125,7 @@
  <connections>
   <connection>
    <sender>actionOpen</sender>
-   <signal>activated()</signal>
+   <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
    <slot>onOpen()</slot>
    <hints>
@@ -141,7 +141,7 @@
   </connection>
   <connection>
    <sender>actionSave</sender>
-   <signal>activated()</signal>
+   <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
    <slot>onSave()</slot>
    <hints>
@@ -157,7 +157,7 @@
   </connection>
   <connection>
    <sender>actionExit</sender>
-   <signal>activated()</signal>
+   <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
    <slot>onExit()</slot>
    <hints>
@@ -173,7 +173,7 @@
   </connection>
   <connection>
    <sender>actionNew</sender>
-   <signal>activated()</signal>
+   <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
    <slot>onNew()</slot>
    <hints>
