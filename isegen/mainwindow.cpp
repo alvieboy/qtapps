@@ -62,7 +62,7 @@ void MainWindow::onNew()
 	if (settings.contains(CONFIG_USER_CREATE_DIRECTORY)) {
 		s.setDefaultDir(settings.value(CONFIG_USER_CREATE_DIRECTORY).toString());
 	} else {
-		s.setDefaultDir(QDir().absolutePath());
+		s.setDefaultDir(QDir::fromNativeSeparators(QDir().absolutePath()));
 	}
 
 	if (s.exec()) {
