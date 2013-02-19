@@ -147,8 +147,8 @@ QString ISEXML::fileTypeToString(enum ISEFileType type)
 		return "FILE_VHDL";
 	case FILE_UCF:
 		return "FILE_UCF";
-	case FILE_SCH:
-        return "FILE_SCHEMATIC";
+	case FILE_SCHEMATIC:
+		return "FILE_SCHEMATIC";
 	default:
 		return "";
 	}
