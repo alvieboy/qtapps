@@ -5,8 +5,9 @@
 #include "boardselect.h"
 
 MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
+	QMainWindow(parent),
+	ui(new Ui::MainWindow),
+	settings("isegen","zpuinoteam")
 {
 	ui->setupUi(this);
 	ui->verticalLayoutWidget->setVisible(false);
@@ -55,9 +56,20 @@ void MainWindow::onNew()
 {
 	BoardSelect s;
 	s.setXml( &xml );
-	s.exec();
-	xml.createBare();
-	xml.updateProject( s.getPlatform(), s.getBoard(), s.getVariant() );
+
+	/* Figure out a proper directory */
+
+	if (settings.contains(CONFIG_USER_CREATE_DIRECTORY)) {
+		s.setDefaultDir(settings.value(CONFIG_USER_CREATE_DIRECTORY).toString());
+	} else {
+		s.setDefaultDir(QDir().absolutePath());
+	}
+
+	if (s.exec()) {
+        settings.setValue(CONFIG_USER_CREATE_DIRECTORY, s.getDefaultDir());
+		xml.createBare();
+		xml.updateProject( s.getPlatform(), s.getBoard(), s.getVariant() );
+	}
 }
 
 void MainWindow::onExit()

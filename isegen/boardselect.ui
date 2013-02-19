@@ -77,6 +77,37 @@
       <item row="2" column="1">
        <widget class="QComboBox" name="variantComboBox"/>
       </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>Project name:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QLineEdit" name="projectName"/>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="label_5">
+        <property name="text">
+         <string>Target directory:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QLineEdit" name="targetDir"/>
+        </item>
+        <item>
+         <widget class="QPushButton" name="selectDir">
+          <property name="text">
+           <string>...</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
      </layout>
     </item>
     <item>
@@ -214,10 +245,44 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>selectDir</sender>
+   <signal>clicked()</signal>
+   <receiver>BoardSelect</receiver>
+   <slot>onDirectoryChoose()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>565</x>
+     <y>150</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>319</x>
+     <y>239</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>projectName</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>BoardSelect</receiver>
+   <slot>onProjectNameChanged(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>362</x>
+     <y>118</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>319</x>
+     <y>239</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>onProjectChanged(QString)</slot>
   <slot>onVariantChanged(QString)</slot>
   <slot>onBoardChanged(QString)</slot>
+  <slot>onDirectoryChoose()</slot>
+  <slot>onProjectNameChanged(QString)</slot>
  </slots>
 </ui>

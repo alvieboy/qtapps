@@ -1,12 +1,14 @@
 #include "boardselect.h"
 #include "ui_boardselect.h"
 #include <QDebug>
+#include <QFileDialog>
 
 BoardSelect::BoardSelect(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::BoardSelect)
 {
     ui->setupUi(this);
+	ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
 }
 
 BoardSelect::~BoardSelect()
@@ -70,4 +72,41 @@ void BoardSelect::onBoardChanged(QString board)
 
 	i = xml->getBoardInformation(ui->projectComboBox->currentText(), board);
 	ui->labelBoard->setText(i.description);
+}
+
+void BoardSelect::setDefaultDir(const QString&name)
+{
+	createDir=name;
+	updateDirName();
+}
+
+QString BoardSelect::getDefaultDir() const
+{
+    return createDir;
+}
+
+void BoardSelect::updateDirName()
+{
+	ui->targetDir->setText(createDir + QDir::separator() + ui->projectName->text());
+}
+
+void BoardSelect::onDirectoryChoose()
+{
+	QFileDialog dialog;
+
+	/* TODO: improve this */
+	QString dir = QFileDialog::getExistingDirectory(this, tr("Open Directory"),
+													createDir,
+													QFileDialog::ShowDirsOnly
+													| QFileDialog::DontResolveSymlinks);
+	if (dir.length()) {
+		createDir=dir;
+        updateDirName();
+	}
+}
+
+void BoardSelect::onProjectNameChanged(QString name)
+{
+	updateDirName();
+	ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(name.length()>0);
 }

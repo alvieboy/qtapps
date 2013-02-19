@@ -4,6 +4,9 @@
     <platforms>
       <platform name="ZPUino">
       	<description>ZPUino is a SoC (System on a Chip) with a 32-bit ZPU processor.</description>
+        <paths>
+         <path name="targetsourcedir">hdl</path>
+        </paths>
         <boards>
           <board name="Papilio One 250">
             <description>Gadget Factory "Papilio One" board, fitted with a Xilinx Spartan 3E 250 FPGA</description>

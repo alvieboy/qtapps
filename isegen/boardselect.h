@@ -21,14 +21,23 @@ public:
 	QString getBoard() const;
 	QString getVariant() const;
 
+	void setDefaultDir(const QString&);
+	QString getDefaultDir() const;
+
+protected:
+    void updateDirName();
+
 public slots:
 	void onProjectChanged(QString);
+	void onProjectNameChanged(QString);
 	void onVariantChanged(QString);
 	void onBoardChanged(QString);
+	void onDirectoryChoose();
 
 private:
 	Ui::BoardSelect *ui;
 	ISEXML*xml;
+	QString createDir;
 };
 
 #endif // BOARDSELECT_H

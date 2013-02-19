@@ -3,7 +3,9 @@
 
 #include <QMainWindow>
 #include "isexml.h"
+#include <QSettings>
 
+#define CONFIG_USER_CREATE_DIRECTORY "UserCreateDirectory"
 
 namespace Ui {
 class MainWindow;
@@ -26,6 +28,7 @@ protected:
 	void openFile(const QString &name);
 private:
 	Ui::MainWindow *ui;
+	QSettings settings;
 	ISEXML xml;
 };
 
