@@ -74,6 +74,7 @@ void MainWindow::onNew()
 
 void MainWindow::onExit()
 {
+    close();
 }
 
 
