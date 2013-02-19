@@ -39,7 +39,7 @@ QString BoardSelect::getVariant() const
 }
 
 
-void BoardSelect::onProjectChanged(QString project)
+void BoardSelect::onPlatformChanged(QString project)
 {
 	PlatformInformation i;
 
@@ -109,4 +109,13 @@ void BoardSelect::onProjectNameChanged(QString name)
 {
 	updateDirName();
 	ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(name.length()>0);
+}
+
+QString BoardSelect::getProjectName() const
+{
+	return ui->projectName->text();
+}
+QString BoardSelect::getTargetDirectory() const
+{
+	return ui->targetDir->text();
 }

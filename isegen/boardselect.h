@@ -21,6 +21,9 @@ public:
 	QString getBoard() const;
 	QString getVariant() const;
 
+	QString getProjectName() const;
+	QString getTargetDirectory() const;
+
 	void setDefaultDir(const QString&);
 	QString getDefaultDir() const;
 
@@ -28,7 +31,7 @@ protected:
     void updateDirName();
 
 public slots:
-	void onProjectChanged(QString);
+    void onPlatformChanged(QString);
 	void onProjectNameChanged(QString);
 	void onVariantChanged(QString);
 	void onBoardChanged(QString);

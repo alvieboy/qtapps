@@ -50,7 +50,7 @@
       <item row="0" column="0">
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>Project type:</string>
+         <string>Platform type:</string>
         </property>
        </widget>
       </item>
@@ -201,7 +201,7 @@
    <sender>projectComboBox</sender>
    <signal>currentIndexChanged(QString)</signal>
    <receiver>BoardSelect</receiver>
-   <slot>onProjectChanged(QString)</slot>
+   <slot>onPlatformChanged(QString)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>346</x>
@@ -279,7 +279,7 @@
   </connection>
  </connections>
  <slots>
-  <slot>onProjectChanged(QString)</slot>
+  <slot>onPlatformChanged(QString)</slot>
   <slot>onVariantChanged(QString)</slot>
   <slot>onBoardChanged(QString)</slot>
   <slot>onDirectoryChoose()</slot>
